@@ -1,9 +1,20 @@
 const path = require('path');
 const HTMLPlugin = require('html-webpack-plugin');
-const webpack = require('webpack')
+const webpack = require('webpack');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const autoprefixer = require('autoprefixer')
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const extractCSS = new ExtractTextPlugin('stylesheets/[name]-one.css');
+const extractLESS = new ExtractTextPlugin('stylesheets/[name]-two.css');
+const manifestReact = require('../vendor/vendor_react_manifest.json');
+const manifestLib = require('../vendor/vendor_lib_manifest.json');
+const bundleConfig = require("../vendor/vendor_config.json");
+const ManifestPlugin = require("webpack-manifest-plugin");
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 // 是否为开发环境
 const isDev = process.env.NODE_ENV === 'development';
-console.log('isDev',isDev);
+console.log('isDev', isDev);
 const config = {
     mode: isDev ? 'development' : 'production', //开发模式 
     entry: {
@@ -12,7 +23,7 @@ const config = {
     output: {
         path: path.resolve(__dirname, '../dist/'), // 输出路径 
         filename: '[name].[hash:8].js', // 输出的文件名（带版本号） 
-        chunkFilename:'[name].[chunkhash:8].js',
+        chunkFilename: '[name].[chunkhash:8].js',
         publicPath: '/public/'
     },
     // 模块管理 
@@ -22,17 +33,73 @@ const config = {
                 test: /\.(js|jsx)$/i,
                 loader: 'babel-loader',
                 options: {
-                    plugins: ["react-hot-loader/babel","syntax-dynamic-import" ],
+                    plugins: ["react-hot-loader/babel", "syntax-dynamic-import"],
                     presets: ["env", "react"]
                 },
                 exclude: path.join(__dirname, '../node_modules')
-            }
+            },
+            {
+                test: /\.(png|svg|jpg|gif)$/,
+                use: [
+                    // 应用多个 loader 和选项
+                    "file-loader"
+                ]
+            },
+            {
+                test: /\.(woff|woff2|eot|ttf|otf)$/,
+                use: [
+                    // 应用多个 loader 和选项
+                    "file-loader"
+                ]
+            },
+            {
+                test: /\.css$/,
+                use: extractCSS.extract(['css-loader', {
+                    loader: 'postcss-loader',
+                    options: {
+                        ident: 'postcss',
+                        plugins: (loader) => [
+                            require('autoprefixer')(),
+                            require('cssnano')()
+                        ]
+                    }
+                }])
+            },
+            {
+                test: /\.less$/,
+                use: extractLESS.extract(['css-loader', {
+                    loader: 'postcss-loader',
+                    options: {
+                        ident: 'postcss',
+                        plugins: (loader) => [
+                            require('autoprefixer')({ browsers: ['last 2 versions'] }),
+                            require('cssnano')()
+                        ]
+                    }
+                },
+                    'less-loader'])
+            },
         ]
-    }, 
+    },
     // webpack插件 
     plugins: [
         // for ssr,
-        new HTMLPlugin({ template: '!!ejs-compiled-loader!' + path.resolve(__dirname, '../client/server.ejs'), filename: 'server.ejs' })
+        new HTMLPlugin({ template: '!!ejs-compiled-loader!' + path.resolve(__dirname, '../client/server.ejs'), filename: 'server.ejs' }),
+        new webpack.DllReferencePlugin({
+            manifest: manifestReact
+        }),
+        new webpack.DllReferencePlugin({
+            manifest: manifestLib
+        }),
+        new MiniCssExtractPlugin({
+            // Options similar to the same options in webpackOptions.output
+            // both options are optional
+            filename: '[name].[hash].css',
+            chunkFilename: '[id].[hash].css',
+        }),
+        extractCSS,
+        extractLESS,
+        new ManifestPlugin(),
     ]
 };
 if (isDev) {
@@ -49,11 +116,33 @@ if (isDev) {
         },
         // noInfo: true
     }
-    config.plugins.push( new HTMLPlugin({
-        template: path.resolve(__dirname, '../client/index.html')
-    }));
-    config.plugins.push(new webpack.HotModuleReplacementPlugin())
-}else{
-    // config.plugins.push()
+    config.plugins.push(...[
+        new HTMLPlugin({
+            template: path.resolve(__dirname, '../client/index.html')
+        }),
+        new AddAssetHtmlPlugin({
+            filepath: path.resolve(__dirname, '../dist/dll/*.dll.js'),
+        }),
+        new webpack.HotModuleReplacementPlugin(),
+    ]);
+} else {
+    config.plugins.push(...[
+        new OptimizeCSSAssetsPlugin({
+            cssProcessor: require('cssnano'),
+            cssProcessorOptions: { discardComments: { removeAll: true } },
+        }),
+        new AddAssetHtmlPlugin({
+            filepath: path.resolve(__dirname, '../vendor/*.dll.js'),
+        }),
+        new UglifyJsPlugin({
+            uglifyOptions: {
+                compress: {
+                    warnings: false,
+                    drop_debugger: true,
+                    drop_console: true
+                }
+            }
+        }),
+    ])
 }
 module.exports = config;

@@ -31,7 +31,7 @@ const config = {
     rules: [
       // 使用babel-loader来处理js文件，及jsx文件
       {
-        test: /\.(js|jsx)$/i,
+        test: /\.jsx?$/i,
         loader: "babel-loader",
         options: {
           plugins: ["react-hot-loader/babel", "syntax-dynamic-import"],

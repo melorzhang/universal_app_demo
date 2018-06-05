@@ -22,6 +22,7 @@ const getTemplate = () => {
 };
 const getRedirectUrlData=(url)=>{
     return new Promise((resolve, reject) => {
+      console.log(url)
         axios
           .get(`http://localhost:8000${url}`)
           .then(res => {

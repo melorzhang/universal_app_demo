@@ -63,7 +63,7 @@ const config = {
       {
         test: /\.l?[ec]ss$/,
         use: [
-          isDev ? "style-loader" : MiniCssExtractPlugin.loader,
+          MiniCssExtractPlugin.loader,
           "css-loader",
           {
             loader: "postcss-loader",
@@ -88,20 +88,18 @@ const config = {
     //         path.resolve(__dirname, "../client/server.ejs"),
     //     filename: "server.ejs"
     // }),
-    new webpack.DllReferencePlugin({
-      manifest: manifestReact
-    }),
-    new webpack.DllReferencePlugin({
-      manifest: manifestLib
-    }),
+    // new webpack.DllReferencePlugin({
+    //   manifest: manifestReact
+    // }),
+    // new webpack.DllReferencePlugin({
+    //   manifest: manifestLib
+    // }),
     new MiniCssExtractPlugin({
-      // Options similar to the same options in webpackOptions.output
-      // both options are optional
-      filename: "[name].[hash].css",
-      chunkFilename: "[id].[hash].css"
+      filename: "[name].[hash:6].css",
+      chunkFilename: "[id].[hash:6].css"
     }),
 
-    new ManifestPlugin()
+    // new ManifestPlugin()
   ]
 };
 module.exports = config;

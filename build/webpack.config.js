@@ -23,7 +23,7 @@ const config = {
     path: path.resolve(__dirname, "../dist/"), // 输出路径
     filename: "[name].[hash:8].js", // 输出的文件名（带版本号）
     chunkFilename: "[name].[chunkhash:8].js",
-    publicPath: "/public/"
+    publicPath: "/"
   },
   // 模块管理
   module: {
@@ -101,8 +101,8 @@ const config = {
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
-      filename: "[name].[hash].css",
-      chunkFilename: "[id].[hash].css"
+      filename: "[name].[hash:6].css",
+      chunkFilename: "[id].[hash:6].css"
     }),
 
     new ManifestPlugin()
@@ -116,10 +116,10 @@ if (isDev) {
     contentBase: path.resolve(__dirname, "../dist/"), //静态文件路径
     overlay: true, // 开启错误调试
     hot: true, //是否开启hot-module-replacement
-    publicPath: "/public/",
+    publicPath: "/",
     historyApiFallback: {
       // 404默认返回
-      index: "/public/index.html"
+      index: "/index.html"
     }
     // noInfo: true
   };

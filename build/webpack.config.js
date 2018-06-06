@@ -22,7 +22,7 @@ const config = {
   output: {
     path: path.resolve(__dirname, "../dist/"), // 输出路径
     filename: "[name].[hash:8].js", // 输出的文件名（带版本号）
-    chunkFilename: "[name].[chunkhash:8].js",
+    chunkFilename: isDev ? "[name].js" : "[name].[chunkhash:8].js",
     publicPath: "/"
   },
   // 模块管理
@@ -34,7 +34,18 @@ const config = {
         test: /\.jsx?$/i,
         loader: "babel-loader",
         options: {
-          plugins: ["react-hot-loader/babel", "syntax-dynamic-import"],
+          plugins: [
+            "react-hot-loader/babel",
+            "syntax-dynamic-import",
+            [
+              "import-inspector",
+              {
+                serverSideRequirePath: true,
+                webpackRequireWeakId: true
+              }
+            ],
+            "react-loadable/babel",
+          ],
           presets: ["env", "react"]
         },
         exclude: path.join(__dirname, "../node_modules")

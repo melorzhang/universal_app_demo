@@ -11,6 +11,8 @@ const ManifestPlugin = require("webpack-manifest-plugin");
 const AddAssetHtmlPlugin = require("add-asset-html-webpack-plugin");
 const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 const isDev = process.env.NODE_ENV === "development";
+const ReactLoadablePlugin = require("react-loadable/webpack")
+  .ReactLoadablePlugin;
 const config = {
   mode: isDev ? "development" : "production", //开发模式
   target: "node", // node运行环境
@@ -20,7 +22,9 @@ const config = {
   output: {
     path: path.resolve(__dirname, "../dist/"), // 输出路径
     filename: "server-app.js", // 输出的文件名
-    libraryTarget: "commonjs2" // 使用最新commonjs模块化方案
+    chunkFilename: isDev ? "[name].js" : "[name].[chunkhash:8].js",
+    libraryTarget: "commonjs2", // 使用最新commonjs模块化方案,
+    publicPath: "/",
   },
   // 模块管理
   module: {
@@ -31,7 +35,17 @@ const config = {
         test: /\.(js|jsx)$/i,
         loader: "babel-loader",
         options: {
-          plugins: ["react-hot-loader/babel", "syntax-dynamic-import"],
+          plugins: [
+            "syntax-dynamic-import",
+            [
+              "import-inspector",
+              {
+                serverSideRequirePath: true,
+                webpackRequireWeakId: true
+              }
+            ],
+            "react-loadable/babel"
+          ],
           presets: ["env", "react"]
         },
         exclude: path.join(__dirname, "../node_modules")
@@ -81,25 +95,13 @@ const config = {
     ]
   },
   plugins: [
-    // for ssr,
-    // new HTMLPlugin({
-    //     template:
-    //         "!!ejs-compiled-loader!" +
-    //         path.resolve(__dirname, "../client/server.ejs"),
-    //     filename: "server.ejs"
-    // }),
-    // new webpack.DllReferencePlugin({
-    //   manifest: manifestReact
-    // }),
-    // new webpack.DllReferencePlugin({
-    //   manifest: manifestLib
-    // }),
     new MiniCssExtractPlugin({
       filename: "[name].[hash:6].css",
       chunkFilename: "[id].[hash:6].css"
     }),
-
-    // new ManifestPlugin()
+    new ReactLoadablePlugin({
+      filename: "./dist/react-loadable.json"
+    })
   ]
 };
 module.exports = config;

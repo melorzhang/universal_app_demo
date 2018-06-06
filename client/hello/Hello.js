@@ -1,3 +1,4 @@
 import React from 'react';
-const Hello=()=>(<div>hello</div>);
+import "./index.less";
+const Hello=()=>(<div className='hello'>hello</div>);
 export default Hello;

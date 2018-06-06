@@ -5,10 +5,8 @@ const fs = require("fs");
 const ReactSSR = require("react-dom/server");
 var isDev = process.env.NODE_ENV === "development";
 const app = express();
-app.use("*", function(req, res,next) {
-  console.log(req.url);
-  next();
-});
+const devPort=8001;
+const prodPort=3456;
 if (!isDev) { //线上环境
     console.log('prod');
     const serverApp = require('../dist/server-app').default;
@@ -25,7 +23,7 @@ if (!isDev) { //线上环境
 
     devServer(app);
 }
-const port = isDev ? 8001 : 3456;
+const port = isDev ? devPort : prodPort;
 
 app.listen(port, () => {
   console.log(`server is listening on ${port}`);

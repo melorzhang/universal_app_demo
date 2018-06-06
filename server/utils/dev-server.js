@@ -7,30 +7,18 @@ const mfs = new MemoryFS();
 const path = require("path");
 const ReactSSR = require("react-dom/server");
 const ejs = require("ejs"); // 获取模板，在开发环境，没有打包好的dist,所以模板的获取要到，webpack-dev-server服务获取
-const getTemplate = () => {
-  return new Promise((resolve, reject) => {
-    axios
-      .get("http://localhost:8000/server.ejs")
-      .then(response => {
-        resolve(response.data);
-      })
-      .catch(e => {
-        console.log("get server.ejs fail");
-        reject(e);
-      });
-  });
-};
-const getRedirectUrlData=(url)=>{
+const devHost = 'http://localhost:8000'
+const getRedirectUrlData = (url, host = devHost)=>{
     return new Promise((resolve, reject) => {
-      console.log(url)
+      console.log('getRedirectUrlData',url)
         axios
-          .get(`http://localhost:8000${url}`)
+          .get(`${host}${url}`)
           .then(res => {
-              console.log('JSON.stringify(res)')
+            console.log(`get ${host}${url}`)
             resolve(res.data);
           })
           .catch(e => {
-            console.log("get server.ejs fail");
+            console.log(`get ${url} fail`);
             reject(e);
           });
     });
@@ -63,26 +51,23 @@ compiler.watch({}, (err, stats) => {
 });
 module.exports = app => {
   // /public开头的path,代理到webpack-dev-server服务
-  app.use(/\./, proxy({ target: "http://localhost:8000" }));
+  app.use(/\./, proxy({ target: devHost }));
   app.get("*", (req, res, next) => {
-    console.log(req.url, req.originalUrl);
     if(/\./.test(req.url)){
-        console.log('assets',req.url)
-        getRedirectUrlData(req.url).then(data=>{
-            res.send(data);
-        })
+      console.log('assets',req.url)
+      res.redirect(`${devHost}${req.url}`);
     }else{
-        getTemplate()
-            .then(template => {
-                if (!serverApp) {
-                    return res.send("serverApp还没编译完成，请稍后刷新！");
-                }
-                const appString = ReactSSR.renderToString(serverApp);
-                const html = ejs.render(template, { appString });
-                console.log("html", html);
-                res.send(html);
-            })
-            .catch(next);
+      getRedirectUrlData("/server.ejs")
+        .then(template => {
+          if (!serverApp) {
+            return res.send("serverApp还没编译完成，请稍后刷新！");
+          }
+          const appString = ReactSSR.renderToString(serverApp);
+          const html = ejs.render(template, { appString });
+          console.log("html", html);
+          res.send(html);
+        })
+        .catch(next);
     }
   });
 };

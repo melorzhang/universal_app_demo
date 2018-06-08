@@ -4,7 +4,9 @@
         ".git/",
         "dist/",
         "node_modules/",
+        "client/",
         "build/"
+
     ],
     "ext": "js",
     "verbose": true,

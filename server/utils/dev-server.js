@@ -42,25 +42,33 @@ const compiler = webpack(config); // 把webpack磁盘形式的存取操作，改
 compiler.outputFileSystem = mfs; // 需要进行服务端渲染的App入口
 let serverApp; // webpack监听入口文件，以及入口文件引用的其他模块的变化
 let mexp;
-compiler.watch({}, (err, stats) => {
-  if (err) throw err;
-  stats = stats.toJson(); // 打印webpack监听过程的报错
-  stats.errors.forEach(err => console.error(err)); // 打印webpack监听过程的警告
-  stats.warnings.forEach(err => console.warn(err)); // 内存中入口App路径
-  const bundlePath = path.join(config.output.path, config.output.filename);
-  console.log("bundlePath", bundlePath);
-  const bundleStr = mfs.readFileSync(bundlePath, "utf-8");
-  console.log("bundleStr");
-  const m = getModuleFromString(bundleStr, config.output.filename);
-  mexp=m.exports;
-  serverApp = m.exports.default;
-});
+compiler.watch(
+  {
+    poll: 1000
+  },
+  (err, stats) => {
+    if (err) throw err;
+    stats = stats.toJson(); // 打印webpack监听过程的报错
+    stats.errors.forEach(err => console.error(err)); // 打印webpack监听过程的警告
+    stats.warnings.forEach(err => console.warn(err)); // 内存中入口App路径
+    console.log('stats',stats)
+    const bundlePath = path.join(config.output.path, config.output.filename);
+    // console.log("bundlePath", bundlePath);
+    const bundleStr = mfs.readFileSync(bundlePath, "utf-8");
+    // console.log("bundleStr");
+    const m = getModuleFromString(bundleStr, config.output.filename);
+    mexp = m.exports;
+    serverApp = m.exports.default;
+
+  }
+);
 module.exports = app => {
   // /public开头的path,代理到webpack-dev-server服务
   app.use(/\./, proxy({ target: devHost }));
   app.get("*", (req, res, next) => {
     if(/\./.test(req.url)){
       console.log('assets',req.url)
+
       res.redirect(`${devHost}${req.url}`);
     }else{
       getRedirectUrlData("/server.ejs")
@@ -70,11 +78,15 @@ module.exports = app => {
           }
           console.log("mexp", mexp);
           // console.log('serverApp',serverApp());
-          const appString = ReactSSR.renderToString(              
-            serverApp({
-              context: {},
-              location: req.url
-            }));
+          let appString;
+          serverApp.then(com=>{
+            appString = ReactSSR.renderToString(com({
+                context: {},
+                location: req.url
+              }));
+          }).catch(e=>{
+            console.log('e',e);
+          })
           const html = ejs.render(template, { appString });
           console.log("html", html);
           res.send(html);

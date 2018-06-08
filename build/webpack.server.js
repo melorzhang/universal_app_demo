@@ -14,6 +14,7 @@ const isDev = process.env.NODE_ENV === "development";
 const ReactLoadablePlugin = require("react-loadable/webpack")
   .ReactLoadablePlugin;
 const config = {
+  devtool:isDev?'source-map':"",
   mode: isDev ? "development" : "production", //开发模式
   target: "node", // node运行环境
   entry: {
@@ -99,9 +100,9 @@ const config = {
       filename: "[name].[hash:6].css",
       chunkFilename: "[id].[hash:6].css"
     }),
-    new ReactLoadablePlugin({
-      filename: "./dist/react-loadable.json"
-    })
+    // new ReactLoadablePlugin({
+    //   filename: "./dist/react-loadable.json"
+    // })
   ]
 };
 module.exports = config;

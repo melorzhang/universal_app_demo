@@ -27,3 +27,4 @@ const App = () => (
   </TransitionSwitch>
 );
 export default hot(module)(App)
+export const HomeCom=Home;

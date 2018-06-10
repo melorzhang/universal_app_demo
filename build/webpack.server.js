@@ -23,7 +23,7 @@ const config = {
   output: {
     path: path.resolve(__dirname, "../dist/"), // 输出路径
     filename: "server-app.js", // 输出的文件名
-    chunkFilename: isDev ? "[name].js" : "[name].[chunkhash:8].js",
+    chunkFilename: isDev ? "server.[name].js" : "server.[name].[chunkhash:6].js",
     libraryTarget: "commonjs2", // 使用最新commonjs模块化方案,
     publicPath: "/",
   },
@@ -100,9 +100,9 @@ const config = {
       filename: "[name].[hash:6].css",
       chunkFilename: "[id].[hash:6].css"
     }),
-    // new ReactLoadablePlugin({
-    //   filename: "./dist/react-loadable.json"
-    // })
+    new ReactLoadablePlugin({
+      filename: "./dist/react-loadable.json"
+    })
   ]
 };
 module.exports = config;

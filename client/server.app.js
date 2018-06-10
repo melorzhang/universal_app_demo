@@ -5,14 +5,14 @@ import ReactDOMServer from "react-dom/server";
 import { StaticRouter, Route } from "react-router-dom";
 import Loadable from "react-loadable";
 import { getBundles } from "react-loadable/webpack";
-import stats from "../dist/react-loadable.json";
+// import stats from "../dist/react-loadable.json";
 import AsyncHello from "./hello";
 import path from 'path';
 const app = express();
 app.use(express.static(path.resolve(__dirname, '..', 'dist')));
 app.get("*", (req, res,next) => {
   let modules = [];
-  let bundles = getBundles(stats, modules);
+  // let bundles = getBundles(stats, modules);
   const context = {};
   if(/\./.test(req.url)){
     console.log('url',req.url);

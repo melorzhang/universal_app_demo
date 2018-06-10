@@ -22,7 +22,7 @@ const config = {
   output: {
     path: path.resolve(__dirname, "../dist/"), // 输出路径
     filename: "[name].[hash:8].js", // 输出的文件名（带版本号）
-    chunkFilename: isDev ? "[name].js" : "[name].[chunkhash:8].js",
+    chunkFilename: isDev ? "app.[name].js" : "[name].[chunkhash:8].js",
     publicPath: "/"
   },
   // 模块管理

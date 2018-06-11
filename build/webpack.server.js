@@ -11,10 +11,9 @@ const ManifestPlugin = require("webpack-manifest-plugin");
 const AddAssetHtmlPlugin = require("add-asset-html-webpack-plugin");
 const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 const isDev = process.env.NODE_ENV === "development";
-const ReactLoadablePlugin = require("react-loadable/webpack")
-  .ReactLoadablePlugin;
+
 const config = {
-  devtool:isDev?'source-map':"",
+  devtool: isDev ? "source-map" : "",
   mode: isDev ? "development" : "production", //开发模式
   target: "node", // node运行环境
   entry: {
@@ -25,7 +24,7 @@ const config = {
     filename: "server-app.js", // 输出的文件名
     chunkFilename: isDev ? "[name].js" : "[name].[chunkhash:8].js",
     libraryTarget: "commonjs2", // 使用最新commonjs模块化方案,
-    publicPath: "/",
+    publicPath: "/"
   },
   // 模块管理
   module: {
@@ -77,21 +76,7 @@ const config = {
       },
       {
         test: /\.l?[ec]ss$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          "css-loader",
-          {
-            loader: "postcss-loader",
-            options: {
-              ident: "postcss",
-              plugins: loader => [
-                require("autoprefixer")(),
-                require("cssnano")()
-              ]
-            }
-          },
-          "less-loader"
-        ]
+        loader: "ignore-loader",//服务端不加载样式，对seo没用，浪费性能
       }
     ]
   },
@@ -99,10 +84,7 @@ const config = {
     new MiniCssExtractPlugin({
       filename: "[name].[hash:6].css",
       chunkFilename: "[id].[hash:6].css"
-    }),
-    // new ReactLoadablePlugin({
-    //   filename: "./dist/react-loadable.json"
-    // })
+    })
   ]
 };
 module.exports = config;

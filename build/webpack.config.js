@@ -11,6 +11,8 @@ const bundleConfig = require("../vendor/vendor_config.json");
 const ManifestPlugin = require("webpack-manifest-plugin");
 const AddAssetHtmlPlugin = require("add-asset-html-webpack-plugin");
 const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
+const ReactLoadablePlugin = require("react-loadable/webpack")
+  .ReactLoadablePlugin;
 // 是否为开发环境
 const isDev = process.env.NODE_ENV === "development";
 console.log("isDev", isDev);
@@ -22,7 +24,11 @@ const config = {
   output: {
     path: path.resolve(__dirname, "../dist/"), // 输出路径
     filename: "[name].[hash:8].js", // 输出的文件名（带版本号）
+<<<<<<< HEAD
     chunkFilename: isDev ? "app.[name].js" : "[name].[chunkhash:8].js",
+=======
+    chunkFilename: isDev ? "app.[name].js" : "app.[name].[chunkhash:8].js",
+>>>>>>> c7120f522234d1c38273dc02f94b5491c2b53318
     publicPath: "/"
   },
   // 模块管理
@@ -44,7 +50,7 @@ const config = {
                 webpackRequireWeakId: true
               }
             ],
-            "react-loadable/babel",
+            "react-loadable/babel"
           ],
           presets: ["env", "react"]
         },
@@ -115,8 +121,10 @@ const config = {
       filename: "[name].[hash:6].css",
       chunkFilename: "[id].[hash:6].css"
     }),
-
-    new ManifestPlugin()
+    new ManifestPlugin(),
+    new ReactLoadablePlugin({
+      filename: "./dist/react-loadable.json"
+    })
   ]
 };
 if (isDev) {

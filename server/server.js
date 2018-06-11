@@ -14,8 +14,8 @@ if (!isDev) { //线上环境
     const template = fs.readFileSync(path.join(__dirname, '../dist/server.ejs'), 'utf-8');
     app.get('*', (req, res) => {
         var appString = ReactSSR.renderToString(serverApp);
-        var html = ejs.render(template, { appString }); res.send(html);
-        
+        var html = ejs.render(template, { appString }); 
+        res.send(html);
     });
 } else { // 开发环境
     console.log('dev');

@@ -48,7 +48,7 @@ const config = {
             ],
             "react-loadable/babel"
           ],
-          presets: ["env", "react"]
+          presets: ["env","stage-2", "react"]
         },
         exclude: path.join(__dirname, "../node_modules")
       },
@@ -95,6 +95,15 @@ const config = {
         ]
       }
     ]
+  },
+  resolve: {
+    extensions: [".js", ".jsx", ".json"],
+    alias: {
+      "@": path.resolve(__dirname, "../client"),
+      coms: path.resolve(__dirname, "../client/components"),
+      pages: path.resolve(__dirname, "../client/pages"),
+      assets: path.resolve(__dirname, "../client/assets")
+    }
   },
   // webpack插件
   plugins: [

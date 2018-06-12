@@ -27,6 +27,7 @@
         "ejs": "^2.6.1",
         "express": "^4.16.3",
         "import-inspector": "^2.0.0",
+        "prop-types": "^15.6.1",
         "react": "^16.4.0",
         "react-dom": "^16.4.0",
         "react-fader": "^2.0.3",
@@ -75,6 +76,9 @@
         "webpack": "^4.10.2",
         "webpack-cli": "^3.0.1",
         "webpack-dev-server": "^3.1.4",
-        "webpack-manifest-plugin": "^2.0.3"
+        "webpack-manifest-plugin": "^2.0.3",
+        "webpack-preset": "^0.2.0",
+        "webpack-preset-babel": "^0.2.0",
+        "webpack-preset-babel-stage-2": "^0.2.0"
     }
 }

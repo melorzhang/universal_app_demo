@@ -22,7 +22,9 @@ const config = {
   output: {
     path: path.resolve(__dirname, "../dist/"), // 输出路径
     filename: "server-app.js", // 输出的文件名
-    chunkFilename: isDev ? "server.[name].js" : "server.[name].[chunkhash:6].js",
+    chunkFilename: isDev
+      ? "server.[name].js"
+      : "server.[name].[chunkhash:6].js",
     libraryTarget: "commonjs2", // 使用最新commonjs模块化方案,
     publicPath: "/"
   },
@@ -76,7 +78,7 @@ const config = {
       },
       {
         test: /\.l?[ec]ss$/,
-        loader: "ignore-loader",//服务端不加载样式，对seo没用，浪费性能
+        loader: "ignore-loader" //服务端不加载样式，对seo没用，浪费性能
       }
     ]
   },
@@ -84,7 +86,16 @@ const config = {
     new MiniCssExtractPlugin({
       filename: "[name].[hash:6].css",
       chunkFilename: "[id].[hash:6].css"
-    }),
-  ]
+    })
+  ],
+  resolve: {
+    extensions: [".js", ".jsx", ".json"],
+    alias: {
+      "@": path.resolve(__dirname, "../client"),
+      coms: path.resolve(__dirname, "../client/components"),
+      pages: path.resolve(__dirname, "../client/pages"),
+      assets: path.resolve(__dirname, "../client/assets")
+    }
+  }
 };
 module.exports = config;

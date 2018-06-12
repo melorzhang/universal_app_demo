@@ -2,9 +2,18 @@ const path = require('path');
 const webpack = require('webpack');
 const pkg = require('../package.json');
 const AssetsPlugin = require('assets-webpack-plugin');
-const reacts = Object.keys(pkg.dependencies).filter(item => /^react/.test(item));
+// 提前构建依赖，加快构建效率，有利于客户端缓存，但需要控制包的大小，提高性能
+const reacts = [
+  "react",
+  "react-dom",
+  "react-router",
+  "react-router-dom",
+  "react-loadable",
+  "react-router-transition-switch",
+  "react-fader",
+];
 // const lib = Object.keys(pkg.dependencies).filter(item => !/^react/.test(item));
-const lib=['axios','redux']
+const lib = ["axios", "redux", "react-redux", "prop-types"];
 console.log(reacts,lib);
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 module.exports = {

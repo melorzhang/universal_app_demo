@@ -8,6 +8,7 @@ const NavBar = () => (
     <Link to="/reducer">Reducer demo</Link>
     <Link to="/reducer/router">Reducer router</Link>
     <Link to="/login">login</Link>
+    <Link to="/protected">protected page</Link>
   </div>
 );
 export default NavBar;

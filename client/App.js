@@ -10,6 +10,7 @@ import Loadable from "react-loadable";
 import "./index.less";
 import PrivateRoute from 'coms/PriviteRoute';
 const Loading = () => <div>loading...</div>;
+
 const App = () => (
   <TransitionSwitch component={Fader}>
     <Route
@@ -37,13 +38,13 @@ const App = () => (
       })}
     />
     <Route path="/login" component={Loadable({
-        loading: Loading,
-        loader: () => import("pages/Login")
-      })} />
+      loading: Loading,
+      loader: () => import("pages/Login")
+    })} />
     <PrivateRoute path="/protected" component={Loadable({
-        loading: Loading,
-        loader: () => import("pages/ProtectedPageDemo")
-      })} />  
+      loading: Loading,
+      loader: () => import("pages/ProtectedPageDemo")
+    })} />
     <Route
       component={Loadable({
         loading: Loading,

@@ -3,20 +3,11 @@ import React from "react";
 import ReactDOMServer from "react-dom/server";
 import { StaticRouter, Route } from "react-router-dom";
 import Loadable from "react-loadable";
-<<<<<<< HEAD
-import { getBundles } from "react-loadable/webpack";
-// import stats from "../dist/react-loadable.json";
-import AsyncHello from "./hello";
-import path from 'path';
-=======
-import TransitionSwitch from "react-router-transition-switch";
-import Fader from "react-fader";
 import path from "path";
 import ejs from 'ejs';
 import fs from "fs";
 import App from "./App.js";
 const template = fs.readFileSync(path.join('.','dist','server.ejs'), 'utf-8');
->>>>>>> c7120f522234d1c38273dc02f94b5491c2b53318
 const app = express();
 app.get("*", (req, res, next) => {
   let modules = [];

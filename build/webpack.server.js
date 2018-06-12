@@ -84,13 +84,7 @@ const config = {
     new MiniCssExtractPlugin({
       filename: "[name].[hash:6].css",
       chunkFilename: "[id].[hash:6].css"
-<<<<<<< HEAD
     }),
-    new ReactLoadablePlugin({
-      filename: "./dist/react-loadable.json"
-=======
->>>>>>> c7120f522234d1c38273dc02f94b5491c2b53318
-    })
   ]
 };
 module.exports = config;

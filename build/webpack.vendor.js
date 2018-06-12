@@ -4,7 +4,7 @@ const pkg = require('../package.json');
 const AssetsPlugin = require('assets-webpack-plugin');
 const reacts = Object.keys(pkg.dependencies).filter(item => /^react/.test(item));
 // const lib = Object.keys(pkg.dependencies).filter(item => !/^react/.test(item));
-const lib=['axios']
+const lib=['axios','redux']
 console.log(reacts,lib);
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 module.exports = {

@@ -10,3 +10,7 @@ export const DEMOOBJCHANGE='DEMOOBJCHANGE';
 export const demoObj=(data={})=>{
   return { type: DEMOOBJCHANGE, data };
 }
+export const REFRESH_USER_STATE = "REFRESH_USER_STATE";
+export const refreshUserState = (data = {}) => {
+  return { type: REFRESH_USER_STATE, data };
+};

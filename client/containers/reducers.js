@@ -20,3 +20,12 @@ export const demoObj=(state={},action)=>{
       return state;
   }
 }
+export const userState=(state={},action)=>{
+  const data = action.data;
+  switch (action.type) {
+    case actions.REFRESH_USER_STATE:
+      return { ...data };
+    default:
+      return state;
+  }
+}

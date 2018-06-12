@@ -8,6 +8,7 @@ import TransitionSwitch from "react-router-transition-switch";
 import Fader from "react-fader";
 import Loadable from "react-loadable";
 import "./index.less";
+import PrivateRoute from 'coms/PriviteRoute';
 const Loading = () => <div>loading...</div>;
 const App = () => (
   <TransitionSwitch component={Fader}>
@@ -16,8 +17,6 @@ const App = () => (
       exact
       component={Loadable({
         loading: Loading,
-        //把你的Hello组件写到单独的文件中
-        //然后使用webpack的 dynamic import
         loader: () => import("pages/Home")
       })}
     />
@@ -26,8 +25,6 @@ const App = () => (
       exact
       component={Loadable({
         loading: Loading,
-        //把你的Hello组件写到单独的文件中
-        //然后使用webpack的 dynamic import
         loader: () => import("pages/ReducerDemo")
       })}
     />
@@ -36,16 +33,20 @@ const App = () => (
       exact
       component={Loadable({
         loading: Loading,
-        //把你的Hello组件写到单独的文件中
-        //然后使用webpack的 dynamic import
         loader: () => import("pages/ReducerRouteDemo")
       })}
     />
+    <Route path="/login" component={Loadable({
+        loading: Loading,
+        loader: () => import("pages/Login")
+      })} />
+    <PrivateRoute path="/protected" component={Loadable({
+        loading: Loading,
+        loader: () => import("pages/ProtectedPageDemo")
+      })} />  
     <Route
       component={Loadable({
         loading: Loading,
-        //把你的Hello组件写到单独的文件中
-        //然后使用webpack的 dynamic import
         loader: () => import("pages/NoMatch")
       })}
     />

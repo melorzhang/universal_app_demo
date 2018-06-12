@@ -48,7 +48,7 @@ const config = {
             ],
             "react-loadable/babel"
           ],
-          presets: ["env", "react"]
+          presets: ["env","stage-2", "react"]
         },
         exclude: path.join(__dirname, "../node_modules")
       },

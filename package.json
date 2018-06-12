@@ -10,6 +10,7 @@
         "devc": "rimraf dist && cross-env NODE_ENV=development webpack-dev-server --config build/webpack.config.js",
         "devs": "cross-env NODE_ENV=development nodemon ./server/server.js",
         "start": "cross-env NODE_ENV=production && npm run build && node ./server/server.js",
+        "start:nobuild": "cross-env NODE_ENV=production && node ./server/server.js",
         "devt": "nodemon ./dist/server-app.js"
     },
     "keywords": [

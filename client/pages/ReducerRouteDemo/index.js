@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import NavBar from "coms/NavBar";
 import { connectCounter } from "@/containers/CounterContainer";
@@ -14,8 +13,8 @@ class ReducerRouteDemo extends React.Component {
   }
   render() {
     // props from container
-    const { addCounter, subCounter, counter } = this.props;
-    const { placeDemoData, demoObj } = this.props;
+    const {  counter } = this.props;
+    const {  demoObj } = this.props;
     return (
       <div className="reducer-demo-page page">
         <NavBar />

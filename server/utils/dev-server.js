@@ -64,7 +64,7 @@ compiler.watch(
 );
 module.exports = app => {
   // /public开头的path,代理到webpack-dev-server服务
-  app.use(/\./, proxy({ target: devHost }));
+  // app.use(/\./, proxy({ target: devHost }));
   app.get("*", (req, res, next) => {
     if(/\./.test(req.url)){
       console.log('assets',req.url)

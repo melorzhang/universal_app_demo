@@ -14,7 +14,7 @@ class Login extends React.Component {
     };
   }
   submit = () => {
-    console.log(this.state);
+    // console.log(this.state);
     const {refreshUserState}=this.props;
     refreshUserState(this.state);
   };

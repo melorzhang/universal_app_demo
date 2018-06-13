@@ -1,4 +1,3 @@
-import React from "react";
 import { connect } from "react-redux";
 import { refreshUserState } from "@/containers/actions.js";
 import BrowserUtil from "@/utils/BrowserUtil";

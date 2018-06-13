@@ -6,7 +6,7 @@ const routes = [
     exact: true,
     component: Loadable({
       loading: Loading,
-      loader: () => import("pages/Home")
+      loader: () => import(/* webpackChunkName: "Home" */ "pages/Home")
     })
   },
   {
@@ -14,7 +14,7 @@ const routes = [
     exact: true,
     component: Loadable({
       loading: Loading,
-      loader: () => import("pages/Login")
+      loader: () => import(/* webpackChunkName: "Login" */ "pages/Login")
     })
   },
   {
@@ -22,7 +22,8 @@ const routes = [
     exact: true,
     component: Loadable({
       loading: Loading,
-      loader: () => import("pages/ReducerDemo")
+      loader: () =>
+        import(/* webpackChunkName: "ReducerDemo" */ "pages/ReducerDemo")
     })
   },
   {
@@ -30,17 +31,19 @@ const routes = [
     exact: true,
     component: Loadable({
       loading: Loading,
-      loader: () => import("pages/ReducerRouteDemo")
+      loader: () =>
+        import(/* webpackChunkName: "ReducerRouteDemo" */ "pages/ReducerRouteDemo")
     })
   }
 ];
 export default routes;
 export const privateRoutes = [
   {
-    path: '/protected',
+    path: "/protected",
     component: Loadable({
       loading: Loading,
-      loader: () => import("pages/ProtectedPageDemo")
+      loader: () =>
+        import(/* webpackChunkName: "ProtectedPageDemo" */ "pages/ProtectedPageDemo")
     })
   }
 ];

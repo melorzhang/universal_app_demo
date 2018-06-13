@@ -1,4 +1,3 @@
-import React from "react";
 import { connect } from "react-redux";
 import { addCounter, subCounter } from "@/containers/actions.js";
 const mapStateToProps = (state, ownProps) => {

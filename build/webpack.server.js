@@ -1,15 +1,4 @@
 const path = require("path"); // 是否为开发环境
-const webpack = require("webpack");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-const autoprefixer = require("autoprefixer");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const manifestReact = require("../vendor/vendor_react_manifest.json");
-const manifestLib = require("../vendor/vendor_lib_manifest.json");
-const bundleConfig = require("../vendor/vendor_config.json");
-const ManifestPlugin = require("webpack-manifest-plugin");
-const AddAssetHtmlPlugin = require("add-asset-html-webpack-plugin");
-const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 const isDev = process.env.NODE_ENV === "development";
 
 const config = {
@@ -83,10 +72,7 @@ const config = {
     ]
   },
   plugins: [
-    new MiniCssExtractPlugin({
-      filename: "[name].[hash:6].css",
-      chunkFilename: "[id].[hash:6].css"
-    })
+
   ],
   resolve: {
     extensions: [".js", ".jsx", ".json"],

@@ -124,7 +124,7 @@ const config = {
       // Options similar to the same options in webpackOptions.output
       // both options are optional
       filename: "[name].[hash:6].css",
-      chunkFilename: "[id].[hash:6].css"
+      chunkFilename: "[name].[hash:6].css"
     }),
     new ManifestPlugin(),
     new ReactLoadablePlugin({

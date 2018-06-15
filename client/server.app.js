@@ -8,6 +8,7 @@ import ejs from "ejs";
 import fs from "fs";
 import { Provider } from "react-redux";
 import { createStore, combineReducers } from "redux";
+import compression from "compression";
 import * as reducers from "@/containers/reducers";
 import App from "./App.js";
 const template = fs.readFileSync(path.join(".", "dist", "server.ejs"), "utf-8");
@@ -18,12 +19,21 @@ const prodPort = 3456;
 const isDev = process.env.NODE_ENV === "development";
 Loadable.preloadAll()
   .then(() => {
+    app.use(
+      compression({
+        //设置gzip输出
+        filter: (req, res) =>
+          /text|javascript|ico/.test(res.getHeader("Content-Type")),
+        level: 9,
+        threshold: "3kb"
+      })
+    );
     app.get("*", (req, res, next) => {
       let modules = [];
       // let bundles = getBundles(stats, modules);
       const context = {};
-      const seoTxt = "'seo seo'";//应该是一个(req.url)=>'specialSeoWords',用于模板字符串会转义，使用两层引号避免中间空格引起问题
-      const title= 'ssr例子'  //(req.url)=>title
+      const seoTxt = "'seo seo'"; //应该是一个(req.url)=>'specialSeoWords',用于模板字符串会转义，使用两层引号避免中间空格引起问题
+      const title = "ssr例子"; //(req.url)=>title
       if (/\./.test(req.url)) {
         console.log("url", req.url);
         next();
@@ -36,7 +46,7 @@ Loadable.preloadAll()
           </Provider>
         );
         // console.log("appString", appString);
-        const html = ejs.render(template, { appString, seoTxt,title });
+        const html = ejs.render(template, { appString, seoTxt, title });
         res.send(html);
       }
     });

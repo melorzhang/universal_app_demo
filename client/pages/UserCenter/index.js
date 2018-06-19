@@ -1,3 +1,3 @@
 import React from "react";
-const UserCenter=({params})=><div>hi,{params.username}</div>  
+const UserCenter = ({ match }) => <div>hi,{match.params.uid}</div>  
 export default UserCenter

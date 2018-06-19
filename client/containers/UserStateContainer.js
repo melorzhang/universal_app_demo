@@ -16,6 +16,10 @@ const mapDispatchToProps = dispatch => {
       const newState = { ...data, inited: true };
       BrowserUtil.setSessionStorage("userInfo", JSON.stringify(newState));
       dispatch(refreshUserState(newState));
+    },
+    logout:()=>{
+      BrowserUtil.setSessionStorage("userInfo", '');
+      dispatch(refreshUserState({}));
     }
   };
 };

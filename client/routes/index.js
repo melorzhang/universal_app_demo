@@ -37,13 +37,12 @@ const routes = [
   }
 ];
 export default routes;
-export const privateRoutes = [
-  {
-    path: "/protected",
-    component: Loadable({
-      loading: Loading,
-      loader: () =>
-        import(/* webpackChunkName: "ProtectedPageDemo" */ "pages/ProtectedPageDemo")
-    })
-  }
-];
+export const privateRoutes = [{ path: "/protected", component: Loadable({
+             loading: Loading,
+             loader: () =>
+               import(/* webpackChunkName: "ProtectedPageDemo" */ "pages/ProtectedPageDemo")
+           }) }, { path: "/user/center/:uid", component: Loadable({
+             loading: Loading,
+             loader: () =>
+               import(/* webpackChunkName: "ProtectedPageDemo" */ "pages/UserCenter")
+           }) }];

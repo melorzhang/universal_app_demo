@@ -1,6 +1,7 @@
 import { connect } from "react-redux";
 import { refreshUserState } from "@/containers/actions.js";
 import BrowserUtil from "@/utils/BrowserUtil";
+import axios from "axios";
 const mapStateToProps = state => {
   const localUserState = BrowserUtil.getSessionStorage("userInfo");
   if (JSON.stringify(state.userState) === "{}") {
@@ -20,6 +21,12 @@ const mapDispatchToProps = dispatch => {
     logout:()=>{
       BrowserUtil.setSessionStorage("userInfo", '');
       dispatch(refreshUserState({}));
+    },
+    getUserInfo:()=>{
+      return axios.get("https://yesno.wtf/api").then(res => {
+        console.log(res);
+        return res.data;
+      });
     }
   };
 };

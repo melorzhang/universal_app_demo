@@ -1,14 +1,13 @@
 import express from "express";
 import React from "react";
 import ReactDOMServer from "react-dom/server";
-import { StaticRouter, Route } from "react-router-dom";
+import { StaticRouter } from "react-router-dom";
 import Loadable from "react-loadable";
 import path from "path";
 import ejs from "ejs";
 import fs from "fs";
 import { Provider } from "react-redux";
 import { createStore, combineReducers } from "redux";
-import compression from "compression";
 import * as reducers from "@/containers/reducers";
 import App from "./App.js";
 const template = fs.readFileSync(path.join(".", "dist", "server.ejs"), "utf-8");
@@ -19,15 +18,7 @@ const prodPort = 3456;
 const isDev = process.env.NODE_ENV === "development";
 Loadable.preloadAll()
   .then(() => {
-    app.use(
-      compression({
-        //设置gzip输出
-        filter: (req, res) =>
-          /text|javascript|ico/.test(res.getHeader("Content-Type")),
-        level: 9,
-        threshold: "3kb"
-      })
-    );
+  
     app.get("*", (req, res, next) => {
       let modules = [];
       // let bundles = getBundles(stats, modules);
